@@ -49,29 +49,15 @@ def check_planet(update, context):
     planet_name = user_text[len(user_text)-1].capitalize()
     date_now = datetime.today().strftime('%Y/%m/%d')
     
-    if planet_name == 'Mercury':
-        planet = ephem.Mercury(date_now)
-    elif planet_name == 'Venus':
-        planet = ephem.Venus(date_now)
-    # elif planet_name == 'Earth':
-    #    planet = ephem.Earth(date_now)
-    elif planet_name == 'Mars':
-        planet = ephem.Mars(date_now)
-    elif planet_name == 'Jupiter':
-        planet = ephem.Jupiter(date_now)
-    elif planet_name == 'Saturn':
-        planet = ephem.Saturn(date_now)
-    # elif planet_name == 'Uranus':
-    #    planet = ephem.Uranus(date_now)
-    elif planet_name == 'Neptune':
-        planet = ephem.Neptune(date_now)
-    else:
+    try:
+        planet = getattr(ephem,planet_name)
+        constel = ephem.constellation(planet(date_now)) 
+        print(f'Привет, планета {planet_name} сейчас находится в созвездии {constel}')
+
+        update.message.reply_text(f'Привет, планета {planet_name} сейчас находится в созвездии {constel}')
+    except AttributeError:
         update.message.reply_text('введите правильное название планеты')  
-        return
-    print(planet)
-    constelation = ephem.constellation(planet)
-    print(constelation)
-    update.message.reply_text(f'Привет, планета {planet_name} сейчас находится в созвездии {constelation}')
+
 
 def main():
     mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY, use_context=True)
