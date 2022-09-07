@@ -15,14 +15,6 @@
 * Посчитать и вывести суммарное количество продаж всех товаров
 * Посчитать и вывести среднее количество продаж всех товаров
 """
-def sum_sold(sold):
-  sum = 0
-  for each in sold:
-    sum += each
-  return sum
-
-def avg_sold(sold):
-  return sum_sold(sold)/len(sold)
 
 def main():
     """
@@ -37,14 +29,13 @@ def main():
     sum_all = 0
     quant = 0
     for each in products:
-      sum = sum_sold(each['items_sold'])
-      avg = avg_sold(each['items_sold'])
-      print(f"Всего продано {each['product']}: {sum}")
-      print(f"В среднем продавалось {each['product']}: {avg}")
-      sum_all += sum
+      sum_sold = sum(each['items_sold'])
+      print(f"Всего продано {each['product']}: {sum_sold}")
+      print(f"В среднем продавалось {each['product']}: {sum_sold/len(each['items_sold'])}")
+      sum_all += sum_sold
       quant += len(each['items_sold'])
 
-    print(f'Всего продано {sum} телефонов')
+    print(f'Всего продано {sum_all} телефонов')
     print(f'Средне число проданных: {sum_all/quant}')
     
 if __name__ == "__main__":
