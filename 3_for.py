@@ -21,7 +21,22 @@ def main():
     Эта функция вызывается автоматически при запуске скрипта в консоли
     В ней надо заменить pass на ваш код
     """
-    pass
+    products = [
+    {'product': 'iPhone 12', 'items_sold': [363, 500, 224, 358, 480, 476, 470, 216, 270, 388, 312, 186]}, 
+    {'product': 'Xiaomi Mi11', 'items_sold': [317, 267, 290, 431, 211, 354, 276, 526, 141, 453, 510, 316]},
+    {'product': 'Samsung Galaxy 21', 'items_sold': [343, 390, 238, 437, 214, 494, 441, 518, 212, 288, 272, 247]},
+    ]
+    sum_all = 0
+    quant = 0
+    for each in products:
+      sum_sold = sum(each['items_sold'])
+      print(f"Всего продано {each['product']}: {sum_sold}")
+      print(f"В среднем продавалось {each['product']}: {sum_sold/len(each['items_sold'])}")
+      sum_all += sum_sold
+      quant += len(each['items_sold'])
+
+    print(f'Всего продано {sum_all} телефонов')
+    print(f'Средне число проданных: {sum_all/quant}')
     
 if __name__ == "__main__":
     main()

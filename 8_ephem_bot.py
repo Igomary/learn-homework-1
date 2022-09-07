@@ -1,3 +1,5 @@
+import ephem
+from datetime import datetime
 """
 Домашнее задание №1
 
@@ -41,6 +43,21 @@ def talk_to_me(update, context):
     print(user_text)
     update.message.reply_text(text)
 
+def check_planet(update, context):
+    print('Вызван /planet')
+    user_text = update.message.text.split(' ')
+    planet_name = user_text[len(user_text)-1].capitalize()
+    date_now = datetime.today().strftime('%Y/%m/%d')
+    
+    try:
+        planet = getattr(ephem,planet_name)
+        constel = ephem.constellation(planet(date_now)) 
+        print(f'Привет, планета {planet_name} сейчас находится в созвездии {constel}')
+
+        update.message.reply_text(f'Привет, планета {planet_name} сейчас находится в созвездии {constel}')
+    except AttributeError:
+        update.message.reply_text('введите правильное название планеты')  
+
 
 def main():
     mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY, use_context=True)
@@ -48,6 +65,7 @@ def main():
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
+    dp.add_handler(CommandHandler("planet", check_planet))
 
     mybot.start_polling()
     mybot.idle()
